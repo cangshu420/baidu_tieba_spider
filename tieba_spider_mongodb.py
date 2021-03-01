@@ -126,17 +126,17 @@ class TiebaSpider:
             #4.保存数据
             # self.save_content_list(content_list)
             #5.请求下一页的url地址，进入循环2-5
+    def download_data_from_mongodb(self):
+        import pandas as pd
+        b = []
+        a = tieba_spider.collection.find({}).sort("_id").limit(1000)
+        for i in a:
+            b.append(i)
+        c = pd.DataFrame(b)
+        c.to_csv("music.csv", index=None)
 
 if __name__ == '__main__':
     tieba_spider = TiebaSpider("music")
     tieba_spider.run()
 
-
-    # 导出前1000条mongodb数据到本地
-    import pandas as pd
-    b=[]
-    a=tieba_spider.collection.find({}).sort("_id").limit(1000)
-    for i in a :
-        b.append(i)
-    c=pd.DataFrame(b)
-    c.to_csv("music.csv",index=None)
+    tieba_spider.download_data_from_mongodb()
